@@ -1,0 +1,6 @@
+.navBar{
+  background-color: rgba(25, 91, 85, 0.822);
+backdrop-filter: blur(19px) saturate(180%);
+border: 1px solid rgba(255, 255, 255, 0.208);
+color: white;
+}
