@@ -30,11 +30,12 @@ const MessageArea = () => {
   useEffect(() => {
     if(sendMessage !== null){
         socket.current.emit('send-message', sendMessage)
+        console.log("Sending Message", sendMessage)
     }
 }, [sendMessage])
 
   useEffect(() => {
-    socket.current = io('http://localhost:8801')
+    socket.current = io('http://localhost:8800')
     // To subscribe(register) for the server
     socket.current.emit("new-user-add", user)
     // To catch the emitted User from the socket.io server
@@ -47,6 +48,7 @@ const MessageArea = () => {
   // Receiving Message from Socket Server
   useEffect(() => {
     socket.current.on('receive-message', (data) => {
+        console.log("Recieved Message", data)
         setReceiveMessage(data)
     })
   }, [])
@@ -88,6 +90,8 @@ const MessageArea = () => {
     }
   };
 
+  console.log("Current Chat", currentChat)
+
   const handleMouseDown = (e) => {
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
@@ -114,7 +118,7 @@ const MessageArea = () => {
 
   return (
     <div className="h-screen flex flex-col bg-gradient-to-b from-gray-100 to-gray-200">
-      <MessageNavbar />
+      <MessageNavbar currentUser = {user} />
       {/* Left Side */}
       <div className="flex flex-1 overflow-y-auto">
         <div

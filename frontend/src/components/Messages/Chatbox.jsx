@@ -15,7 +15,7 @@ const Chatbox = ({ currentUserId, chat, setSendMessage, receiveMessage}) => {
 
   useEffect(() => {
     if (receiveMessage !== null && receiveMessage.chatId === chat?._id) {
-            console.log("Chat ID",chat._id);
+            console.log("Chat ID",chat?._id);
             console.log("Data received in ChatBox", receiveMessage);
             setMessages((prevMessages) => [...prevMessages, receiveMessage]);
         }
@@ -65,28 +65,26 @@ const Chatbox = ({ currentUserId, chat, setSendMessage, receiveMessage}) => {
   }
   
   const handleSendMessage = async (e) => {
-      e.preventDefault();
+    const message = {
+      senderId: currentUserId,
+      text: newMessage,
+      chatId: chat._id,
+    }
 
-      const formData = new FormData();
-      formData.append('senderId', currentUserId);
-      formData.append('text', newMessage);
-      formData.append('chatId', chat._id);
-      if (selectedFile) {
-          formData.append('attachment', selectedFile);
-      }
+    // Send data to the MongoDB
+    try {
+      const {data} = await addMessage(message)
+      setMessages([...messages, data])
+      setNewMessage("")
 
-      try {
-          const { data } = await addMessage(formData);
-          setMessages((prevMessages) => [...prevMessages, data]);
-          setNewMessage("");
-          setSelectedFile(null);
-      } catch (error) {
-          console.log(error);
-      }
+    } catch (error) {
+      console.log(error)
+    }
 
-      const receiverId = chat.members.find((id) => id !== currentUserId);
-      setSendMessage({ ...formData, receiverId });
-  };
+    // Sending Message to socket
+    const receiverId = chat.members.find((id) => id !== currentUserId);
+    setSendMessage({...message, receiverId})
+  }
 
   // Always Scroll to the last Message
   useEffect(() => {

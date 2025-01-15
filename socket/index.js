@@ -1,6 +1,6 @@
-const io = require("socket.io")(8801, {
+const io = require("socket.io")(8800, {
     cors: {
-        origin:"http://localhost:3002"
+        origin:"http://localhost:3000"
     }
 })
 
@@ -11,6 +11,7 @@ let activeUsers = []
 io.on("connection", (socket) => {
     // Registering the user on socket server
     socket.on('new-user-add', (newUserId) => {
+        console.log(`New user added: ${newUserId}`);
         // If user is not added previously
         if(!activeUsers.some((user) => user.userId === newUserId)){
             activeUsers.push({
@@ -28,9 +29,11 @@ io.on("connection", (socket) => {
         const {receiverId} = data;
         const user = activeUsers.find((user) => user.userId === receiverId)
         console.log("Sending the Message towards(id): ", receiverId)
-        console.log("Data: ", data)
+        console.log("Receiver Id ", receiverId)
+        console.log("If user is avialable", user)
         if(user){
             io.to(user.socketId).emit("receive-message", data)
+            console.log("received Message", data)
         }
     })
     

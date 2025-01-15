@@ -30,7 +30,7 @@ app.use("/message", MessageRoute);
 app.use("/api", AllUserDataRoute);
 
 // MongoDB Connection
-mongoose.connect('mongodb://localhost:27017/souloxy-chat', { 
+mongoose.connect('mongodb://localhost:27017/Message-App', { 
   useNewUrlParser: true, 
   useUnifiedTopology: true 
 })
