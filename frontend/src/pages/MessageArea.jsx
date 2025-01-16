@@ -24,8 +24,10 @@ const MessageArea = () => {
   const socket = useRef()
   
   // getting spUser id from the redux store..here its basically "currentUser"
-  const user = useSelector((state) => state.user.selectedUser);
+  const selectedUser = useSelector((state) => state.user.selectedUser);
 
+  const user = selectedUser?._id;
+  
   // Sending Message to Socket Server
   useEffect(() => {
     if(sendMessage !== null){

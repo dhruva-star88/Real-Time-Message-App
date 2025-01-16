@@ -2,6 +2,7 @@ import express from "express";
 import ChatRoute from "./Routes/ChatRoute.js";
 import MessageRoute from "./Routes/MessageRoute.js";
 import UserRoute from "./Routes/UserRoute.js";
+import authRoutes from "./Routes/authRoutes.js";
 import bodyParser from "body-parser";
 import AllUserDataRoute from "./Routes/AllUserDataRoute.js";
 import mongoose from "mongoose";
@@ -16,6 +17,7 @@ const corsOptions = {
   allowedHeaders: 'Content-Type,Authorization'
 };
 app.use(cors(corsOptions));
+app.use(bodyParser.json()); 
 
 const PORT = process.env.PORT || 5000; // Default to 5000 if PORT isn't set
 
@@ -25,6 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded data
 
 // Routes
 app.use("/user", UserRoute);
+app.use('/auth', authRoutes);
 app.use("/chat", ChatRoute);
 app.use("/message", MessageRoute);
 app.use("/api", AllUserDataRoute);

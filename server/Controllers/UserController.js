@@ -1,5 +1,34 @@
 import UserModel from "../Models/UserModel.js";
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+
+// Controller function to add a new user
+export const addUser = async (req, res) => {
+  const { username, email, password } = req.body;
+
+  // Check if user already exists
+  const existingUser = await UserModel.findOne({ email });
+  if (existingUser) {
+    return res.status(400).json({ message: 'User already exists!' });
+  }
+
+  // Hash the password before saving it
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // Create new user
+  const newUser = new UserModel({
+    username,
+    email,
+    password: hashedPassword,
+  });
+
+  try {
+    await newUser.save();
+    res.status(201).json({ message: 'User created successfully!' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error creating user', error: err });
+  }
+};
 
 // Controller to get user data by user ID
 export const getUserData = async (req, res) => {
