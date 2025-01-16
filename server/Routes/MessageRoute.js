@@ -1,6 +1,5 @@
 import express from "express";
 import multer from "multer";
-import { GridFsStorage } from "multer-gridfs-storage";
 import { MongoClient, GridFSBucket } from "mongodb"
 import { addMessage, getFile, getMessages } from "../Controllers/MessageController.js"
 
@@ -23,6 +22,6 @@ router.post("/", upload.single('attachment') ,addMessage)
 router.get("/:chatId", getMessages)
 
 // Route to get the file (attachment)
-router.get('/file/:filename', getFile);
+router.get('/file/:attachmentId', getFile);
 
 export default router

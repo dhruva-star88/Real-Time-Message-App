@@ -26,7 +26,16 @@ export const addMessage = async (req, res) => {
 
     console.log("Received File:", req.file);  // Log file details
 
+    let attachmentType = 'unknown';  // Default to unknown if no file or an unsupported type
+
     if (file) {
+        // Determine the attachment type based on the MIME type
+        if (file.mimetype.startsWith('image/')) {
+            attachmentType = 'image';  // Set to image for image files
+        } else if (file.mimetype === 'application/pdf') {
+            attachmentType = 'file';  // Set to file for non-image files like PDFs
+        }
+
         const readableStream = new Readable();
         readableStream.push(file.buffer);
         readableStream.push(null);
@@ -45,6 +54,7 @@ export const addMessage = async (req, res) => {
                     senderId,
                     text,
                     attachment: fileId,  // Store the file ID in the message
+                    attachmentType,  // Store the attachment type (image/file/unknown)
                 });
 
                 try {
@@ -59,11 +69,13 @@ export const addMessage = async (req, res) => {
                 res.status(500).send('Error uploading file');
             });
     } else {
+        // If no file, just create a message with text
         const message = new MessageModel({
             chatId,
             senderId,
             text,
         });
+
         try {
             const result = await message.save();
             res.status(200).json(result);
@@ -73,11 +85,16 @@ export const addMessage = async (req, res) => {
     }
 };
 
-// Retrieve a specific file
+// Retrieve a specific file by its ObjectId
 export const getFile = (req, res) => {
-    const { filename } = req.params;
+    const { attachmentId } = req.params;
 
-    const downloadStream = bucket.openDownloadStreamByName(filename);
+    // Ensure the attachmentId is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(attachmentId)) {
+        return res.status(400).send('Invalid file ID');
+    }
+
+    const downloadStream = bucket.openDownloadStream(new mongoose.Types.ObjectId(attachmentId));
 
     downloadStream.on('data', (chunk) => {
         res.write(chunk);
