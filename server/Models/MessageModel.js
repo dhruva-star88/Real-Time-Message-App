@@ -4,9 +4,11 @@ const MessageSchema = mongoose.Schema(
   {
     chatId: {
       type: String,
+      required: true,
     },
     senderId: {
       type: String,
+      required: true,
     },
     text: {
       type: String,
@@ -18,6 +20,10 @@ const MessageSchema = mongoose.Schema(
     attachmentType: {
       type: String,  // This will store the type of attachment (image, file, etc.)
       default: "unknown",  // Default to 'unknown' if not specified
+    },
+    read: {
+      type: Boolean,  // New field for read status
+      default: false, // Default to false (unread)
     },
   },
   {

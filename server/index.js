@@ -7,8 +7,10 @@ import bodyParser from "body-parser";
 import AllUserDataRoute from "./Routes/AllUserDataRoute.js";
 import mongoose from "mongoose";
 import cors from "cors"; 
+import { updateReadStatus } from "./Controllers/MessageController.js";
 
 const app = express();
+const router = express.Router();
 
 // Use cors middleware
 const corsOptions = {

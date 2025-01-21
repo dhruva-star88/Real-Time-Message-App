@@ -173,12 +173,12 @@ const Chatbox = ({ currentUserId, chat, setSendMessage, receiveMessage }) => {
                   {msg.attachmentType === "image" ? (
                     <div className="relative">
                       <img
-                        src={`/message/file/${msg.attachment}`} // Using the getFile endpoint
+                        src={`http://localhost:5000/message/file/${msg.attachment}`} // Using the getFile endpoint
                         alt="Attachment"
                         className="max-w-xs rounded-lg"
                       />
                       <a
-                        href={`api/message/file/${msg.attachment}`} // Using the getFile endpoint for file download
+                        href={`http://localhost:5000/message/file/${msg.attachment}`} // Using the getFile endpoint for file download
                         target="_blank"
                         rel="noopener noreferrer"
                         className="absolute top-2 right-2 text-white bg-gray-500 p-2 rounded-full"
@@ -191,7 +191,7 @@ const Chatbox = ({ currentUserId, chat, setSendMessage, receiveMessage }) => {
                     <div className="flex items-center">
                       {getFileIcon(msg.attachmentType)} {/* Display the correct file icon */}
                       <a
-                        href={`api/message/file/${msg.attachment}`} // Using the getFile endpoint for file download
+                        href={`http://localhost:5000/message/file/${msg.attachment}`} // Using the getFile endpoint for file download
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-white flex items-center ml-2 p-2 bg-blue-600 rounded-full"
