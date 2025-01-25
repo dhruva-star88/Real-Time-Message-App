@@ -15,7 +15,7 @@ const router = express.Router();
 // Use cors middleware
 const corsOptions = {
   origin: '*',  // Allow all origins (you can restrict it to your front-end domain)
-  methods: 'GET,POST',
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT'], // Add PATCH here
   allowedHeaders: 'Content-Type,Authorization'
 };
 app.use(cors(corsOptions));

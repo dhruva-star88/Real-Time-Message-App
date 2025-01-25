@@ -8,6 +8,7 @@ import { createChat, userChats } from "../api/ChatRequest";
 import ClientSelector from "../components/Messages/ClientSelector"; // Importing ClientSelector
 import {io} from "socket.io-client"
 import { useNavigate } from "react-router-dom";
+import { updateReadStatus } from "../api/MessageRequest";
 
 const MessageArea = () => {
   const [leftSidebarWidth, setLeftSidebarWidth] = useState(320);
